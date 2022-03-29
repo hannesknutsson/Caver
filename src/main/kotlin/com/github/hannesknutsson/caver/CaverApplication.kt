@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class CaverApplication
 
 fun main(args: Array<String>) {
+	@Suppress("SpreadOperator")
 	runApplication<CaverApplication>(*args)
 }
