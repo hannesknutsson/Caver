@@ -8,6 +8,7 @@ class CaverApplicationTests {
 
 	@Test
 	fun contextLoads() {
+		println("This sure will shut up that picky linting thingamajam...")
 	}
 
 }
