@@ -21,6 +21,7 @@ class MainController : WebSecurityConfigurerAdapter() {
 
     //Continue here: https://www.baeldung.com/spring-boot-vue-js
     //And here: https://www.baeldung.com/sso-spring-security-oauth2
+    //Add commit for testing stuff
     @GetMapping("/")
     fun index(model: Model, principal: Principal): String {
         model.addAttribute("eventName", "FIFA 2018")
