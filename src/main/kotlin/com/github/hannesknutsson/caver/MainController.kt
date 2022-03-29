@@ -25,6 +25,7 @@ class MainController : WebSecurityConfigurerAdapter() {
     fun index(model: Model, principal: Principal): String {
         model.addAttribute("eventName", "FIFA 2018")
         println(principal)
+        asödlfkjaösldfk
         return "index"
     }
 }
