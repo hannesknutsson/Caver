@@ -86,6 +86,7 @@ jobs:
     - name: Setup Detekt
       run: |
         dest=$( mktemp -d )
+        echo $DETEKT_DOWNLOAD_URL
         curl --request GET \
           --url $DETEKT_DOWNLOAD_URL \
           --silent \
