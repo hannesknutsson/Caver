@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ development ]
   schedule:
-     - cron: '18 11 * * 5'
+    - cron: '18 11 * * 5'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,34 +20,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
-#    - uses: actions/upload-artifact@v2
-#      with:
-#        name: caver-jar
-#        path: target/caver*.jar
-#
-#      - uses: actions/checkout@v3
-#
-#     - uses: actions/download-artifact@v2
-#       with:
-#         name: caver-jar
-
-     - name: Create artifact target dir
-       run: mkdir target
-
-     - name: Move artifact to target dir
-       run: mv caver*.jar target/caver.jar
-
-     - name: Build the Docker image
-       run: docker build . --file Dockerfile --tag caver:$(date +%s)
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Create artifact target dir
+        run: mkdir target
+      - name: Move artifact to target dir
+        run: mv caver*.jar target/caver.jar
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag caver:$(date +%s)
