@@ -5,7 +5,7 @@ spring:
         registration:
           custom:
             client-id: 881ea0651c17428b81d271d1a65ef9ca
-#            client-secret: Set this in environment variables lmao
+#            client-secret: Set this in environment variables
             scope: user-modify-playback-state
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/spotify
@@ -20,12 +20,5 @@ spring:
 
 server:
   port: 8080
-#  servlet:
-#    context-path: /ui-one
-
-#resourceserver:
-#  api:
-#    project:
-#      url: http://localhost:8080/
 
 logging.level.org.springframework.web: DEBUG
