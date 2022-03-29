@@ -31,3 +31,7 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag caver:$(date +%s)
+      - name: Log in to DockerHub
+        env:
+          DOCKERHUB_AUTH: ${{ secrets.DOCKERHUB_AUTH }}
+        run: docker login -u hannesknutsson -p $DOCKERHUB_AUTH
