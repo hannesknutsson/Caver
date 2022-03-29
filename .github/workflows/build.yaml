@@ -30,10 +30,10 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag caver:$GITHUB_SHA
+        run: docker build . --file Dockerfile --tag hannesknutsson/caver:$GITHUB_SHA
       - name: Log in to DockerHub
         env:
           DOCKERHUB_AUTH: ${{ secrets.DOCKERHUB_AUTH }}
         run: docker login -u hannesknutsson -p $DOCKERHUB_AUTH
       - name: Push image to DockerHub
-        run: docker push caver:$GITHUB_SHA
+        run: docker push hannesknutsson/caver:$GITHUB_SHA
