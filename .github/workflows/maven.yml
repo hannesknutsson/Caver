@@ -29,9 +29,5 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - name: Create artifact target dir
-        run: mkdir target
-      - name: Move artifact to target dir
-        run: mv caver*.jar target/caver.jar
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag caver:$(date +%s)
