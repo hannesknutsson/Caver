@@ -47,6 +47,26 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: spring-config
+              mountPath: /
+      volumes:
+        - name: spring-config
+          configMap:
+            name: spring-config
+            items:
+              - key: application.yaml
+                path: application.yaml
+        containers:
+          - name: task-pv-container
+            image: nginx
+            ports:
+              - containerPort: 80
+                name: "http-server"
+            volumeMounts:
+              - mountPath: "/usr/share/nginx/html"
+                name: task-pv-storage
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

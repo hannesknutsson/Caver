@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-config
+data:
+  application.yaml: |
+    spring:
+      security:
+        oauth2:
+          client:
+            registration:
+              custom:
+                client-id: {{ .Values.spotify.client-id }}
+                client-secret: {{ .Values.spotify.client-secret }}
+                scope: user-modify-playback-state
+                authorization-grant-type: authorization_code
+                redirect-uri: https://{{ .Values.hostname }}/login/oauth2/code/spotify
+            provider:
+              custom:
+                authorization-uri: https://accounts.spotify.com/authorize
+                token-uri: https://accounts.spotify.com/api/token
+                user-info-uri: https://api.spotify.com/v1/me
+                user-name-attribute: display_name
+      thymeleaf:
+        cache: false
+    
+    server:
+      port: 80
+    
+    logging.level.org.springframework.web: DEBUG
