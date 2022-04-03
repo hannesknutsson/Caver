@@ -49,7 +49,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: spring-config
-              mountPath: /
+              mountPath: /application.yaml
+              subPath: /application.yaml
       volumes:
         - name: spring-config
           configMap:
