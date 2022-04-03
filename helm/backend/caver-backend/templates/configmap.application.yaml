@@ -10,8 +10,8 @@ data:
           client:
             registration:
               custom:
-                client-id: {{ .Values.spotify.client-id }}
-                client-secret: {{ .Values.spotify.client-secret }}
+                client-id: {{ .Values.spotify.clientid }}
+                client-secret: {{ .Values.spotify.clientsecret }}
                 scope: user-modify-playback-state
                 authorization-grant-type: authorization_code
                 redirect-uri: https://{{ .Values.hostname }}/login/oauth2/code/spotify
