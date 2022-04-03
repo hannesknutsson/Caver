@@ -5,9 +5,7 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/tls-acme: "true"
-  tls:
-  - secretName: caver-dev-tls
 
-hostname: "dev.caver.app"
+hostname: dev.caver.app
 spotify:
   clientid: 881ea0651c17428b81d271d1a65ef9ca
