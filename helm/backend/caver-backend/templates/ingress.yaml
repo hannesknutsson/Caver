@@ -28,10 +28,7 @@ spec:
   {{- end }}
   tls:
     - hosts:
-      - host: {{ .Values.hostname | quote }}
-        paths:
-          - path: /
-            pathType: Prefix
+      - {{ .Values.hostname }}
       secretName: caver-tls
   rules:
     - host: {{ .Values.hostname | quote }}
