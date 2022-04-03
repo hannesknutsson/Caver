@@ -141,7 +141,7 @@ jobs:
 #          fi
 
       - name: Run chart-testing (lint)
-        run: ct lint
+        run: ct lint --all
 #        if: steps.list-changed.outputs.changed == 'true'
 
       - name: Create kind cluster
@@ -149,6 +149,6 @@ jobs:
 #        if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install
+        run: ct install --all
 #        if: steps.list-changed.outputs.changed == 'true'
 
