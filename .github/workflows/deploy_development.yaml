@@ -25,3 +25,4 @@ jobs:
         run: docker login -u hannesknutsson -p $DOCKERHUB_AUTH
       - name: Push image to DockerHub
         run: docker push hannesknutsson/caver:$GITHUB_SHA
+
