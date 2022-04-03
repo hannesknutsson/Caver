@@ -13,8 +13,8 @@ image:
 hostname: some.hostname.com
 
 spotify:
-  client-id:
-  client-secret:
+  clientid:
+  clientsecret:
 
 imagePullSecrets: []
 nameOverride: ""

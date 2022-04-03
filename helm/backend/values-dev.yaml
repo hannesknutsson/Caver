@@ -10,4 +10,4 @@ ingress:
 
 hostname: dev.caver.app
 spotify:
-  client-id: 881ea0651c17428b81d271d1a65ef9ca
+  clientid: 881ea0651c17428b81d271d1a65ef9ca
