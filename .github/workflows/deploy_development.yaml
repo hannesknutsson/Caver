@@ -26,3 +26,22 @@ jobs:
       - name: Push image to DockerHub
         run: docker push hannesknutsson/caver:$GITHUB_SHA
 
+  update-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run the build php script
+        run: |
+          cd charts/caver-backend/ci
+          sed -i '/tag:/c\  tag: hannesknutsson/caver:$GITHUB_SHA' dev-values.yaml
+          cd -
+      - name: Commit files
+        run: |
+          git config --local user.name "GitHub Actions"
+          git add ./charts
+          git commit -m "Update dev environment helm chart values"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
