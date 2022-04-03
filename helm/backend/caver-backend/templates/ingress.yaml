@@ -30,7 +30,7 @@ spec:
   tls:
     {{- range .Values.ingress.tls }}
     - hosts:
-      - host: {{ .Values.hostname }}
+      - host: {{ $.Values.hostname }}
         paths:
           - path: /
             pathType: ImplementationSpecific
