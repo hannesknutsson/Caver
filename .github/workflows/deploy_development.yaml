@@ -1,4 +1,4 @@
-name: Build and run tests with Maven
+name: Deploy Docker image
 
 on:
   push:
