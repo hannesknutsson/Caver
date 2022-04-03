@@ -29,7 +29,7 @@ spec:
   tls:
     - hosts:
       - {{ .Values.hostname }}
-      secretName: caver-tls-test
+      secretName: caver-tls
   rules:
     - host: {{ .Values.hostname | quote }}
       http:
