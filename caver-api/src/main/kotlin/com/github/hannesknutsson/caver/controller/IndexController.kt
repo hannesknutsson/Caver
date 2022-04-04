@@ -1,21 +1,17 @@
 package com.github.hannesknutsson.caver.controller
 
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
+import com.github.hannesknutsson.caver.manager.UserManager
+import com.github.hannesknutsson.caver.security.AuthorizedUser
 import org.springframework.web.bind.annotation.GetMapping
-import java.security.Principal
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
-class IndexController {
+@RestController
+class IndexController(
+        private val userManager: UserManager
+) {
 
-    //Continue here: https://www.baeldung.com/spring-boot-vue-js
-    //And here: https://www.baeldung.com/sso-spring-security-oauth2
     @GetMapping("/")
-    fun index(model: Model, principal: Principal): String {
-        model.addAttribute("eventName", "FIFA 2018")
-        println(principal)
-        return "index"
+    fun index(): String {
+        return "Logged in as " + userManager.getUser(AuthorizedUser.getUserId()).id
     }
-
-
 }
