@@ -27,8 +27,8 @@ jobs:
       - name: Build & test with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Build Docker image
-        run: docker build . --file Dockerfile
+      - name: Build caver-api DockerFile
+        run: docker build caver-api/ --file caver-api/Dockerfile
 
   # This workflow contains a single job called "scan"
   detekt:
