@@ -1,0 +1,10 @@
+# configuration for local environment
+server.port: 8080
+
+redis:
+  hostname: 127.0.0.1
+  port: 6379
+  username: default
+  password: temp
+
+logging.level.org.springframework.web: DEBUG
