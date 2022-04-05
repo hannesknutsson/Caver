@@ -2,7 +2,7 @@ name: Deploy Docker image
 
 on:
   push:
-    branches: [ development ]
+    branches: [ lmao ]
 
 jobs:
   build:

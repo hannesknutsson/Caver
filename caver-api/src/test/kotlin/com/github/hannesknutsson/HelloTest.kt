@@ -1,6 +1,3 @@
 package com.github.hannesknutsson
 
-
-class HelloTest {
-
-}
+class HelloTest

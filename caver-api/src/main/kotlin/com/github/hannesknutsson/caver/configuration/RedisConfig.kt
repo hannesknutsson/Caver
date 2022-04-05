@@ -11,10 +11,12 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate
 
 @Configuration
-class RedisConfig(@Value("\${redis.hostname}") private val hostname: String,
-                  @Value("\${redis.port}") private val port: Int,
-                  @Value("\${redis.username}") private val username: String,
-                  @Value("\${redis.password}") private val password: String) {
+class RedisConfig(
+    @Value("\${redis.hostname}") private val hostname: String,
+    @Value("\${redis.port}") private val port: Int,
+    @Value("\${redis.username}") private val username: String,
+    @Value("\${redis.password}") private val password: String
+) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -36,5 +38,4 @@ class RedisConfig(@Value("\${redis.hostname}") private val hostname: String,
         template.setConnectionFactory(redisConnectionFactory())
         return template
     }
-
 }

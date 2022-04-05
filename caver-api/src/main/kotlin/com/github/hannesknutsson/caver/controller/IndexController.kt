@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class IndexController(
-        private val userManager: UserManager
+    private val userManager: UserManager
 ) {
 
     @GetMapping("/")
