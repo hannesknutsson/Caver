@@ -1,5 +1,5 @@
 image:
-  tag: hannesknutsson/caver:$GITHUB_SHA
+  tag: hannesknutsson/caver:0c9b088dec2ad2d30008d8d3e9ba66bf12a3e14a
 ingress:
   enabled: true
   annotations:
