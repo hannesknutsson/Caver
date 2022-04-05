@@ -1,5 +1,5 @@
 image:
-  tag: hannesknutsson/caver:0c9b088dec2ad2d30008d8d3e9ba66bf12a3e14a
+  tag: 5de87e30eadfa9bf85cc619b5442e4c8119d6dad
 ingress:
   enabled: true
   annotations:
