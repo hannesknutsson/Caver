@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - run: |
           curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.44.0/ktlint
           chmod a+x ktlint
