@@ -7,8 +7,8 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 
 class AuthorizedUser {
     companion object {
-        fun getUserId() : String {
-            val authentication = SecurityContextHolder.getContext().authentication;
+        fun getUserId(): String {
+            val authentication = SecurityContextHolder.getContext().authentication
             if (authentication is OAuth2AuthenticationToken) {
                 return authentication.principal.attributes.getValue(SpotifyAttributeConstants.ID_KEY) as String
             } else {

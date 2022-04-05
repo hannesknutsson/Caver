@@ -12,38 +12,37 @@ import java.util.stream.Collectors
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 class SpotifyAuthenticationSuccessHandler(
-        private val userManager: UserManager,
-        private val oauth2Service: OAuth2AuthorizedClientService) : AuthenticationSuccessHandler {
+    private val userManager: UserManager,
+    private val oauth2Service: OAuth2AuthorizedClientService
+) : AuthenticationSuccessHandler {
 
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
         if (authentication is OAuth2AuthenticationToken) {
-            var clientRegistrationId = authentication.authorizedClientRegistrationId;
-            var client = oauth2Service?.loadAuthorizedClient<OAuth2AuthorizedClient>(clientRegistrationId, authentication.name);
+            var clientRegistrationId = authentication.authorizedClientRegistrationId
+            var client = oauth2Service?.loadAuthorizedClient<OAuth2AuthorizedClient>(clientRegistrationId, authentication.name)
             if (client != null) {
                 persistAuthenticatedUser(authentication, client)
             }
         }
 
-        response.sendRedirect("/");
+        response.sendRedirect("/")
     }
 
     private fun persistAuthenticatedUser(authentication: OAuth2AuthenticationToken, client: OAuth2AuthorizedClient) {
-        val spotifyAttributes = authentication.principal.attributes;
+        val spotifyAttributes = authentication.principal.attributes
 
         val user = User(
-                id = spotifyAttributes.getValue(SpotifyAttributeConstants.ID_KEY) as String,
-                displayName = spotifyAttributes.getValue(SpotifyAttributeConstants.DISPLAY_NAME_KEY) as String,
-                grantedAuthorities = authentication.principal.authorities.stream().map { v -> v.authority }.collect(Collectors.toList()),
-                accessTokenValue = client.accessToken.tokenValue,
-                accessTokenIssuedAt = client.accessToken.issuedAt!!,
-                accessTokenExpiresAt = client.accessToken.expiresAt!!,
-                refreshTokenValue = client.refreshToken?.tokenValue!!,
-                refreshTokenIssuedAt = client.refreshToken?.issuedAt!!)
+            id = spotifyAttributes.getValue(SpotifyAttributeConstants.ID_KEY) as String,
+            displayName = spotifyAttributes.getValue(SpotifyAttributeConstants.DISPLAY_NAME_KEY) as String,
+            grantedAuthorities = authentication.principal.authorities.stream().map { v -> v.authority }.collect(Collectors.toList()),
+            accessTokenValue = client.accessToken.tokenValue,
+            accessTokenIssuedAt = client.accessToken.issuedAt!!,
+            accessTokenExpiresAt = client.accessToken.expiresAt!!,
+            refreshTokenValue = client.refreshToken?.tokenValue!!,
+            refreshTokenIssuedAt = client.refreshToken?.issuedAt!!
+        )
 
         userManager.saveUser(user)
     }
-
-
 }
