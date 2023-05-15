@@ -11,35 +11,67 @@ env:
   DETEKT_RELEASE_TAG: v1.15.0
 
 jobs:
-  maven:
-    name: Maven
+  prepare:
+    name: Prepare PR
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.44.0/ktlint
+          chmod a+x ktlint
+          sudo mv ktlint /usr/local/bin/
+      - name: Format Kotlin classes
+        run: |
+          ktlint --relative --format
+        continue-on-error: true
+      - name: Update Helm chart
+        run: |
+          cd charts/caver-backend/ci
+          sed -i "/tag:/c\  tag: \"$GITHUB_SHA\"" dev-values.yaml
+          cd -
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: GitHub Actions
+          author_email: hannes.knutsson@protonmail.com
+          message: 'Automatic Kotlin formatting and update of Helm values'
+          add: '*'
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-
       - name: Build & test with Maven
         run: mvn -B package --file pom.xml
-
       - name: Build caver-api DockerFile
         run: docker build caver-api/ --file caver-api/Dockerfile
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Build the Docker image
+        run: docker build caver-api --tag hannesknutsson/caver:$GITHUB_SHA
+      - name: Log in to DockerHub
+        env:
+          DOCKERHUB_AUTH: ${{ secrets.DOCKERHUB_AUTH }}
+        run: docker login -u hannesknutsson -p $DOCKERHUB_AUTH
+      - name: Push image to DockerHub
+        run: docker push hannesknutsson/caver:$GITHUB_SHA
 
-  # This workflow contains a single job called "scan"
   detekt:
     name: Detekt
-    # The type of runner that the job will run on
+    needs:
+      - prepare
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      # Gets the download URL associated with the $DETEKT_RELEASE_TAG
       - name: Get Detekt download URL
         id: detekt_info
         env:
@@ -73,7 +105,6 @@ jobs:
           
           DETEKT_DOWNLOAD_URL=$(jq --raw-output '.data.repository.release.releaseAssets.nodes[0].downloadUrl' gh_response.json)
           echo "DETEKT_DOWNLOAD_URL=$DETEKT_DOWNLOAD_URL" >> $GITHUB_ENV
-      # Sets up the detekt cli
       - name: Setup Detekt
         run: |
           dest=$( mktemp -d )
@@ -85,7 +116,6 @@ jobs:
             --output $dest/detekt
           chmod a+x $dest/detekt
           echo $dest >> $GITHUB_PATH
-      # Performs static analysis using Detekt
       - name: Run Detekt
         continue-on-error: true
         run: |
@@ -112,6 +142,8 @@ jobs:
 
   helm:
     name: Helm
+    needs:
+      - prepare
 
     runs-on: ubuntu-latest
     steps:
