@@ -5,12 +5,12 @@ import java.io.Serializable
 import java.time.Instant
 
 @RedisHash("user")
-class User (
-        val id: String,
-        val displayName: String,
-        val grantedAuthorities: List<String>,
-        val accessTokenValue : String,
-        val accessTokenIssuedAt : Instant,
-        val accessTokenExpiresAt : Instant,
-        val refreshTokenValue : String,
-        val refreshTokenIssuedAt : Instant) : Serializable
+data class User (
+        var id: String,
+        var displayName: String,
+        var grantedAuthorities: List<String>,
+        var accessTokenValue : String,
+        var accessTokenIssuedAt : Instant,
+        var accessTokenExpiresAt : Instant,
+        var refreshTokenValue : String,
+        var refreshTokenIssuedAt : Instant) : Serializable

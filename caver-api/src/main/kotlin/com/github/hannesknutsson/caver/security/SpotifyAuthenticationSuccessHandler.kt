@@ -1,8 +1,8 @@
 package com.github.hannesknutsson.caver.security
 
-import com.github.hannesknutsson.caver.manager.UserManager
 import com.github.hannesknutsson.caver.model.SpotifyAttributeConstants
 import com.github.hannesknutsson.caver.model.User
+import com.github.hannesknutsson.caver.service.UserService
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletResponse
 
 
 class SpotifyAuthenticationSuccessHandler(
-        private val userManager: UserManager,
+        private val userService: UserService,
         private val oauth2Service: OAuth2AuthorizedClientService) : AuthenticationSuccessHandler {
 
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
         if (authentication is OAuth2AuthenticationToken) {
-            var clientRegistrationId = authentication.authorizedClientRegistrationId;
-            var client = oauth2Service?.loadAuthorizedClient<OAuth2AuthorizedClient>(clientRegistrationId, authentication.name);
+            val clientRegistrationId = authentication.authorizedClientRegistrationId;
+            val client = oauth2Service.loadAuthorizedClient<OAuth2AuthorizedClient>(clientRegistrationId, authentication.name);
             if (client != null) {
                 persistAuthenticatedUser(authentication, client)
             }
@@ -42,7 +42,7 @@ class SpotifyAuthenticationSuccessHandler(
                 refreshTokenValue = client.refreshToken?.tokenValue!!,
                 refreshTokenIssuedAt = client.refreshToken?.issuedAt!!)
 
-        userManager.saveUser(user)
+        userService.saveUser(user)
     }
 
 

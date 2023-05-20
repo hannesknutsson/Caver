@@ -1,12 +1,12 @@
-package com.github.hannesknutsson.caver.manager
+package com.github.hannesknutsson.caver.service
 
 import com.github.hannesknutsson.caver.model.User
 import com.github.hannesknutsson.caver.repository.UserRepository
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
-@Component
-class UserManager(
+@Service
+class UserService(
         private val userRepository: UserRepository
 ) {
 
@@ -20,6 +20,10 @@ class UserManager(
     fun getUser(id: String) : User {
         logger.info("get user with id={}", id)
         return userRepository.findById(id).orElse(null);
+    }
+
+    fun getAllUsers() : List<User> {
+        return userRepository.findAll().toList();
     }
 
 }
