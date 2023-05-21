@@ -1,7 +1,7 @@
 package com.github.hannesknutsson.caver.security
 
 import com.github.hannesknutsson.caver.model.SpotifyAttributeConstants
-import com.github.hannesknutsson.caver.model.User
+import com.github.hannesknutsson.caver.model.user.User
 import com.github.hannesknutsson.caver.service.UserService
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
@@ -35,6 +35,7 @@ class SpotifyAuthenticationSuccessHandler(
         val user = User(
                 id = spotifyAttributes.getValue(SpotifyAttributeConstants.ID_KEY) as String,
                 displayName = spotifyAttributes.getValue(SpotifyAttributeConstants.DISPLAY_NAME_KEY) as String,
+                profilePictureUrl = resolveProfilePictureUrlFromAttributes(spotifyAttributes),
                 grantedAuthorities = authentication.principal.authorities.stream().map { v -> v.authority }.collect(Collectors.toList()),
                 accessTokenValue = client.accessToken.tokenValue,
                 accessTokenIssuedAt = client.accessToken.issuedAt!!,
@@ -45,5 +46,17 @@ class SpotifyAuthenticationSuccessHandler(
         userService.saveUser(user)
     }
 
-
+    private fun resolveProfilePictureUrlFromAttributes(spotifyAttributes : Map<String, Any>) : String? {
+        try {
+            val images = spotifyAttributes[SpotifyAttributeConstants.IMAGES_KEY] as List<*>
+            if (images.isEmpty()) {
+                return null;
+            }
+            val image = images[0] as Map<*, *>
+            return image[SpotifyAttributeConstants.IMAGES_URL_KEY] as String;
+        } catch (e : Exception) {
+            // if something goes wrong we just return null.
+            return null;
+        }
+    }
 }

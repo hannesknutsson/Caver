@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @Configuration
 class OAuth2Config(
@@ -14,7 +15,11 @@ class OAuth2Config(
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
+        http
+            .csrf()
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .and()
+            .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
