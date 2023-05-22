@@ -1,6 +1,6 @@
 package com.github.hannesknutsson.caver.service
 
-import com.github.hannesknutsson.caver.model.User
+import com.github.hannesknutsson.caver.model.user.User
 import com.github.hannesknutsson.caver.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

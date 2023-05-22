@@ -1,6 +1,9 @@
 package com.github.hannesknutsson.caver.service;
 
-import com.github.hannesknutsson.caver.model.User
+import com.github.hannesknutsson.caver.model.show.Show
+import com.github.hannesknutsson.caver.model.show.ShowMapper
+import com.github.hannesknutsson.caver.model.user.User
+import com.github.hannesknutsson.caver.security.AuthorizedUser
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +17,7 @@ class SpotifyService(
         private val userService: UserService,
         private val clock: Clock,
         @Value("\${spring.security.oauth2.client.registration.custom.client-id}") private val clientId: String,
-        @Value("\${oauth2.secret}") private val clientSecret: String
+        @Value("\${spring.security.oauth2.client.registration.custom.client-secret}") private val clientSecret: String
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -53,4 +56,12 @@ class SpotifyService(
         user.accessTokenExpiresAt = now.plusSeconds(newCredentialsForUser.expiresIn.toLong())
         return user
     }
+
+    fun getShowById(id : String) : Show {
+        val user = userService.getUser(AuthorizedUser.getUserId());
+        val spotifyApi = getApiForUser(clientId, clientSecret, user);
+        val spotifyShow = spotifyApi.getShow(id).build().execute();
+        return ShowMapper.fromSpotifyApi(spotifyShow);
+    }
+
 }

@@ -11,7 +11,7 @@
 
 	<modules>
 		<module>caver-api</module>
-		<module>caver-web</module>
+		<module>caver-frontend</module>
 	</modules>
 
 	<properties>
